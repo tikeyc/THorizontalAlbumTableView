@@ -1,0 +1,19 @@
+//
+//  THorizontalAlbumTableView.pch
+//  THorizontalAlbumTableView
+//
+//  Created by tikeyc on 16/1/13.
+//  Copyright © 2016年 tikeyc. All rights reserved.
+//
+
+#ifndef THorizontalAlbumTableView_pch
+#define THorizontalAlbumTableView_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import "UIViewExt.h"
+#import "THelper.h"
+#import "TCommen.h"
+
+#endif /* THorizontalAlbumTableView_pch */
