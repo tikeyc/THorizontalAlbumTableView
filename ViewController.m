@@ -36,7 +36,6 @@
     _tableView.center = self.view.center;
     [self.view addSubview:_tableView];
     
-    
     _tableView.layer.borderWidth = 2;
     if (/* DISABLES CODE */ (0)) {//切换网络和本地图片类型
         _tableView.data = @[

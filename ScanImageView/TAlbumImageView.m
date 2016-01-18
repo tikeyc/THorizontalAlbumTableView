@@ -23,9 +23,6 @@
     UIImageView *_fullImgView;
     UIActivityIndicatorView *_activityView;
     UIPageControl *_pageControl;
-    UILabel *_numLabel;
-    BOOL _isMore;  //如果图片数量很多的情况下
-    
     
     NSInteger _lastIndex;//s判断时候动画缩小
 }
@@ -65,13 +62,7 @@
         [images insertObject:lastObject atIndex:0];
         _imageModels = [NSArray arrayWithArray:images];
     }
-    
-    //图片数量大于15
-    if (imageModels.count > 15) {
-        _isMore = YES;
-    }else{
-        _isMore = NO;
-    }
+
 }
 
 - (void)showAlbumTap:(UITapGestureRecognizer *)tap{
@@ -129,16 +120,9 @@
         _pageControl.numberOfPages = _imageModels.count - 2;//无线循环的话须-2否则去掉
     }
     _pageControl.currentPage = _selectedIndex;
-    //chj
-    if (_isMore) {
-        _pageControl.hidden = YES;
-    }else{
-        _pageControl.hidden = NO;
-        _numLabel.text = [NSString stringWithFormat:@"  %ld/%lu",_selectedIndex+1,(unsigned long)_imageModels.count];
-    }
     
 //    _albumTableView.hidden = YES;
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:0.2 animations:^{
         _fullImgView.frame = _bgView.frame;
 //        _albumTableView.frame = _bgView.frame;
     } completion:^(BOOL finished) {
@@ -173,7 +157,7 @@
     [_pageControl removeFromSuperview];
     CGRect frame = [self convertRect:self.bounds toView:self.window];
     if (_lastIndex == self.selectedIndex) {
-        [UIView animateWithDuration:1 animations:^{
+        [UIView animateWithDuration:0.2 animations:^{
             _albumTableView.frame = frame;
             _fullImgView.frame = frame;
         } completion:^(BOOL finished) {
@@ -220,18 +204,7 @@
         photoScrollView.bgTap = _zoomOutTap;
         [cell.contentView addSubview:photoScrollView];
         //
-        
-        //chj add
-        if (_isMore) {
-            UILabel *label = [THelper labelWithFrame:CGRectMake(0, photoScrollView.bottom - 50, kScreenWidth, 60) text:nil textColor:RGBColorA(255, 255, 255, 1) textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:12.0f]];
-            _numLabel = label;
-            label.tag = 500002;
-            label.numberOfLines = 0;
-            //        label.backgroundColor = RGBAColor(51,51, 51, 0.5);
-            [cell.contentView addSubview:label];
-        }
-        
-        
+
     }
     //图片
     EEPhotoScrollView *photoScrollView = (EEPhotoScrollView *)[cell.contentView viewWithTag:6666666];
@@ -253,36 +226,6 @@
          photoScrollView.imageView.image = image;
     }else {
          photoScrollView.imgUrl = _imageModels[indexPath.row];
-    }
-///////////
-    
-    //chj add
-//    if (self.window.height > 480) {
-//        _pageControl.top = 480;
-//    }else{
-//        _pageControl.top = 420;
-//    }
-    
-//    if (photoScrollView.right + 60 > self.window.height - 40) {
-//        _pageControl.top = self.window.height - 40;
-//    }
-    
-    
-    //chj add
-    if (_isMore) {
-        UILabel *label = (UILabel *)[cell.contentView viewWithTag:500002];
-//        if (_imageModels.count == 1) {
-//            label.text = [NSString stringWithFormat:@"  %@   %d/%d",[_imageModels[indexPath.row] alt],1,1];
-//        }else{
-//            int page = indexPath.row == 0 ? _imageModels.count : indexPath.row == _imageModels.count - 1 ? 1 : indexPath.row;
-//            label.text = [NSString stringWithFormat:@"  %@   %d/%d",[_imageModels[indexPath.row] alt],page,_imageModels.count];
-//            label.text = [NSString stringWithFormat:@"  %@   %d/%d",[_imageModels[indexPath.row] alt],indexPath.row+1,_imageModels.count];
-//        }
-        
-        label.text = [NSString stringWithFormat:@"  %ld/%lu",indexPath.row+1,(unsigned long)_imageModels.count];
-        CGSize size = [THelper getContentLableSize:label.text withLabelWith:kScreenWidth - 20 withFont:[UIFont systemFontOfSize:12.0f]];
-        label.top = self.window.bottom - size.height - 5;
-        label.height = size.height;
     }
 
     return cell;

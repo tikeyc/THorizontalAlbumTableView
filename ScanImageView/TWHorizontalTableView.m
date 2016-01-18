@@ -89,7 +89,6 @@
     
     imgView.selectedIndex = indexPath.row;
     imgView.imageModels = _data;
-
     return cell;
 }
 

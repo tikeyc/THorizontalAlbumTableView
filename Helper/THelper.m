@@ -39,7 +39,13 @@
     [button addTarget:nil action:action forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
-
++ (CGSize)getContentLableSize:(NSString *)contentString withLabelWith:(CGFloat)labelWith withFont:(UIFont *)font{
+    CGSize size;
+    size = [contentString  sizeWithFont:font
+                      constrainedToSize:CGSizeMake(labelWith, 9999)
+                          lineBreakMode:NSLineBreakByWordWrapping];
+    return size;
+}
 
 #pragma mark 度转弧度
 + (float)huDuFromdu:(float)du

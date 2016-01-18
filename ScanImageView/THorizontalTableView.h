@@ -26,9 +26,6 @@
 /////data
 @property (nonatomic, assign) BOOL isLocalImg; //区别是本地图片还是网络图片
 @property (nonatomic,strong)NSArray *data;
-@property (nonatomic,strong)NSArray *imageNames;
-
-
 
 
 

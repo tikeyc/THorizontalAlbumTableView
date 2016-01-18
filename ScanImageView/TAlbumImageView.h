@@ -12,7 +12,6 @@
 @interface TAlbumImageView : UIImageView<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
 
 @property (nonatomic,strong)NSArray *imageModels;
-@property (nonatomic,strong)NSArray *imageNames;
 @property (nonatomic,assign)NSInteger selectedIndex;
 @property (nonatomic, assign) BOOL isLocalImg; //区别是本地图片还是网络图片
 
