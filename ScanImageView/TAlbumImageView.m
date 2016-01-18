@@ -25,6 +25,9 @@
     UIPageControl *_pageControl;
     UILabel *_numLabel;
     BOOL _isMore;  //如果图片数量很多的情况下
+    
+    
+    NSInteger _lastIndex;//s判断时候动画缩小
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -33,6 +36,7 @@
     if (self) {
         self.userInteractionEnabled = YES;
         self.contentMode = UIViewContentModeScaleAspectFit;
+        _lastIndex = 0;
         [self initSubViews];
     }
     return self;
@@ -118,7 +122,7 @@
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, kScreenHeight - 60, kScreenWidth, 20)];
         _pageControl.currentPage = 0;
         _pageControl.numberOfPages = _imageModels.count - 2;//无线循环的话须-2否则去掉
-        _pageControl.pageIndicatorTintColor = [UIColor whiteColor];
+        _pageControl.pageIndicatorTintColor = [UIColor blackColor];
         _pageControl.currentPageIndicatorTintColor = [UIColor redColor];
         [_pageControl addTarget:self action:@selector(pageControlAction:) forControlEvents:UIControlEventValueChanged];
     }else{
@@ -134,7 +138,7 @@
     }
     
 //    _albumTableView.hidden = YES;
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:1 animations:^{
         _fullImgView.frame = _bgView.frame;
 //        _albumTableView.frame = _bgView.frame;
     } completion:^(BOOL finished) {
@@ -143,14 +147,17 @@
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
         _bgView.backgroundColor = RGBColor(243, 243, 243);
 //        //无限循环滑动 先滑到实际的第2页
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-        [_albumTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+//        [_albumTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
         _albumTableView.hidden = NO;
         _fullImgView.hidden = YES;
     }];
     
     //滑动到选择的第几张图片
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
+    _lastIndex = self.selectedIndex;
+    NSInteger index = self.selectedIndex + 1;
+    _pageControl.currentPage = index;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [_albumTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 }
 
@@ -165,18 +172,28 @@
     _pageControl.currentPage = 0;
     [_pageControl removeFromSuperview];
     CGRect frame = [self convertRect:self.bounds toView:self.window];
-    [UIView animateWithDuration:0.2 animations:^{
-        _albumTableView.frame = frame;
-        _fullImgView.frame = frame;
-    } completion:^(BOOL finished) {
-
+    if (_lastIndex == self.selectedIndex) {
+        [UIView animateWithDuration:1 animations:^{
+            _albumTableView.frame = frame;
+            _fullImgView.frame = frame;
+        } completion:^(BOOL finished) {
+            
+            [_albumTableView removeFromSuperview];
+            [_fullImgView removeFromSuperview];
+            [_bgView removeFromSuperview];
+            _albumTableView = nil;
+            _fullImgView = nil;
+            _bgView = nil;
+        }];
+    }else{
         [_albumTableView removeFromSuperview];
         [_fullImgView removeFromSuperview];
         [_bgView removeFromSuperview];
         _albumTableView = nil;
         _fullImgView = nil;
         _bgView = nil;
-    }];
+    }
+    
     
 }
 
@@ -281,6 +298,7 @@
     NSLog(@"%ld",(long)page);
     page--;
     _pageControl.currentPage = page;
+    _lastIndex = page;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
