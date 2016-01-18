@@ -160,7 +160,7 @@
         nextRow++;
     }
     //判断是否滑动到上一页、下一页，如果是，则缩回当前页
-    if (self.row != nextRow && (nextRow > 0 && nextRow < self.imageModels.count + 2/*(如果需要无限循环滑动，才打开此处)*/)) {
+    if (self.row != nextRow && (nextRow > 0 && nextRow < self.imageModels.count + 2)) {
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:nextRow inSection:0];
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];

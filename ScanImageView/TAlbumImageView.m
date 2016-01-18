@@ -128,7 +128,7 @@
     } completion:^(BOOL finished) {
         //放大图片之后隐藏状态栏
         [_bgView addSubview:_pageControl];
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+
         _bgView.backgroundColor = RGBColor(243, 243, 243);
 //        //无限循环滑动 先滑到实际的第2页
 //        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
@@ -149,7 +149,7 @@
 //缩小图片
 - (void)zoomOut:(UITapGestureRecognizer *)tap{
     //缩小图片之后显示状态栏
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+
     _bgView.backgroundColor = [UIColor clearColor];
     _fullImgView.hidden = NO;
     _albumTableView.hidden = YES;

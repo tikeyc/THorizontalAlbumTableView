@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol SWHorizonDelegate <NSObject>
+@protocol TWHorizonDelegate <NSObject>
 
 @optional
 - (void)pageChange:(NSInteger)index;
@@ -19,7 +19,7 @@
 
 @interface THorizontalTableView : UITableView<UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic, assign)id<SWHorizonDelegate> horizonDelegate;
+@property (nonatomic, assign)id<TWHorizonDelegate> horizonDelegate;
 @property (nonatomic,strong)UIPageControl *pageControl;
 @property (nonatomic,strong)UILabel *numLabel;
 
