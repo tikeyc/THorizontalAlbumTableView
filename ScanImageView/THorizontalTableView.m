@@ -26,6 +26,7 @@
         self.showsHorizontalScrollIndicator = NO;
         self.showsVerticalScrollIndicator = NO;
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
+        //将tableView逆时针旋转90°
         self.transform = CGAffineTransformMakeRotation(-M_PI_2);
         self.pagingEnabled = YES;
         //从新设置frame
@@ -53,6 +54,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        //将contentView顺时针旋转90°
         cell.contentView.transform = CGAffineTransformMakeRotation(M_PI_2);
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -88,7 +90,7 @@
 /////////
     
     imgView.selectedIndex = indexPath.row;
-    imgView.imageModels = _data;
+    imgView.images = _data;
     return cell;
 }
 

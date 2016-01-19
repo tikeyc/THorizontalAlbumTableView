@@ -43,24 +43,24 @@
     _tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showAlbumTap:)];
 }
 
-- (void)setImageModels:(NSArray *)imageModels{
-    if (_imageModels != imageModels) {
-        _imageModels = nil;
-        _imageModels = imageModels;
+- (void)setImages:(NSArray *)images{
+    if (_images != images) {
+        _images = nil;
+        _images = images;
     }
     
     
-    if (_imageModels.count == 0) {
+    if (_images.count == 0) {
         [self removeGestureRecognizer:_tap];
-    }else if (_imageModels.count >= 1){
+    }else if (_images.count >= 1){
         [self addGestureRecognizer:_tap];
         ////无线循环滑动
-        NSMutableArray *images = [NSMutableArray arrayWithArray:_imageModels];
-        id lastObject = [_imageModels lastObject];
-        id firstObject = _imageModels[0];
+        NSMutableArray *images = [NSMutableArray arrayWithArray:_images];
+        id lastObject = [_images lastObject];
+        id firstObject = _images[0];
         [images addObject:firstObject];
         [images insertObject:lastObject atIndex:0];
-        _imageModels = [NSArray arrayWithArray:images];
+        _images = [NSArray arrayWithArray:images];
     }
 
 }
@@ -112,12 +112,12 @@
     if (_pageControl == nil) {
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, kScreenHeight - 60, kScreenWidth, 20)];
         _pageControl.currentPage = 0;
-        _pageControl.numberOfPages = _imageModels.count - 2;//无线循环的话须-2否则去掉
+        _pageControl.numberOfPages = _images.count - 2;//无线循环的话须-2否则去掉
         _pageControl.pageIndicatorTintColor = [UIColor blackColor];
         _pageControl.currentPageIndicatorTintColor = [UIColor redColor];
         [_pageControl addTarget:self action:@selector(pageControlAction:) forControlEvents:UIControlEventValueChanged];
     }else{
-        _pageControl.numberOfPages = _imageModels.count - 2;//无线循环的话须-2否则去掉
+        _pageControl.numberOfPages = _images.count - 2;//无线循环的话须-2否则去掉
     }
     _pageControl.currentPage = _selectedIndex;
     
@@ -184,7 +184,7 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _imageModels.count;
+    return _images.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -210,11 +210,11 @@
     EEPhotoScrollView *photoScrollView = (EEPhotoScrollView *)[cell.contentView viewWithTag:6666666];
     photoScrollView.top = 0;
     photoScrollView.row = indexPath.row;
-    photoScrollView.imageModels = self.imageModels;
+    photoScrollView.imageModels = self.images;
 
     
 ///////////
-    id data = _imageModels[indexPath.row];
+    id data = _images[indexPath.row];
     if (self.isLocalImg) {
         UIImage *image;
         if ([data isKindOfClass:[NSData class]]) {
@@ -225,7 +225,7 @@
 
          photoScrollView.imageView.image = image;
     }else {
-         photoScrollView.imgUrl = _imageModels[indexPath.row];
+         photoScrollView.imgUrl = _images[indexPath.row];
     }
 
     return cell;
@@ -250,11 +250,11 @@
     
     NSLog(@"%f",offSetX);
     if (offSetX == 0) {//滑到 实际的最后一页
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_imageModels.count - 2 inSection:0];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_images.count - 2 inSection:0];
         [_albumTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
     }
     
-    if (offSetX == (_imageModels.count - 1)*kScreenWidth) {//滑到实际的第一页
+    if (offSetX == (_images.count - 1)*kScreenWidth) {//滑到实际的第一页
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
         [_albumTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
     }

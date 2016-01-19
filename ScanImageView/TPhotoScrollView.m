@@ -9,6 +9,11 @@
 #import "TPhotoScrollView.h"
 #import "MBProgressHUD.h"
 #import "UIImageView+WebCache.h"
+#import "UIView+ViewController.h"
+
+@interface EEPhotoScrollView ()<UIAlertViewDelegate>
+
+@end
 
 @implementation EEPhotoScrollView
 
@@ -66,21 +71,24 @@
 //保存图片至手机
 - (void)storeImgTapPress:(UILongPressGestureRecognizer *)longPressap{
     if (longPressap.state == UIGestureRecognizerStateBegan) {
-        __weak typeof(self) weekSelf = self;
-        UIAlertController *alertView = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否保存图片至手机" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            [weekSelf saveImageToPhotos:_imageView.image];
-        }];
-        [alertView addAction:alertAction];
-//        [SMAlertView showAlertWithTitle:@"提示" message:@"是否保存图片至手机" cancelTitle:@"取消" otherTitle:@"确定" completion:^(BOOL cancelled) {
-//            if (!cancelled) {
-//                [self saveImageToPhotos:_imageView.image];
-//            }
+//        __weak typeof(self) weekSelf = self;
+//        UIAlertController *alertView = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否保存图片至手机" preferredStyle:UIAlertControllerStyleAlert];
+//        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            [weekSelf saveImageToPhotos:_imageView.image];
 //        }];
+//        [alertView addAction:alertAction];
+//        [self.viewController presentViewController:alertView animated:YES completion:nil];
+        //上面代码不知道为什么不执行呀  放到其他地方也不执行
+        UIAlertView *view = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否保存图片至手机" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        [view show];
     }else if (longPressap.state == UIGestureRecognizerStateEnded){
         return;
     }
     
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex NS_DEPRECATED_IOS(2_0, 9_0){
+    [self saveImageToPhotos:_imageView.image];
 }
 
 - (void)saveImageToPhotos:(UIImage*)savedImage
